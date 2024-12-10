@@ -8,23 +8,24 @@ public class CustomerService implements Runnable {
     private final int retrievalRate;
     private String customerName;
 
-
     public CustomerService(TicketPool ticketPool, int retrievalRate, String customerName) {
         this.ticketPool = ticketPool;
         this.retrievalRate = retrievalRate;
         this.customerName = customerName;
     }
 
-
+    /**
+    Overrides the run method of runnable interface
+    Executes logic for customer thread to retrieve ticket from ticket pool at a specific rate
+     */
     @Override
     public void run() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
-
+                // Stop the customer if tickets are unavailable
                 if (!ticketPool.canCustomerRetrieve()) {
-                    return; // Stop the customer if tickets are unavailable
+                    return;
                 }
-                // Attempt to retrieve a ticket
                 Ticket ticket = ticketPool.retrieveTicket(customerName);
 
                 if (ticket == null) {
@@ -33,7 +34,6 @@ public class CustomerService implements Runnable {
                 Thread.sleep(retrievalRate * 1000L);
             }
         } catch (InterruptedException e) {
-            //System.out.println(Thread.currentThread().getName() + " interrupted.");
             Thread.currentThread().interrupt();
         }
     }

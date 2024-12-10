@@ -17,12 +17,25 @@ public class TicketPool {
     private int totalTickets;
     private final List<String> logs = new ArrayList<>();
 
-
-    // Initialize pool with simulation configuration
+    /**
+     * Initializes the ticket pool with configuration parameters.
+     *
+     * @param config the configuration object contains configuration parameters
+     */
     public void initialize(TicketingConfig config) {
         this.maxCapacity = config.getMaxTicketPoolCapacity();
         this.totalTickets = config.getTotalTickets();
     }
+
+    /**
+     * Adds a ticket to the ticket pool if space available and tickets remain.
+     * synchronized to ensure thread safety in a multi-threaded environment.
+     *
+     * @param ticket the ticket to be added to the pool.
+     * @param vendorName the name of the vendor
+     * @return true if the ticket was successfully added,  false if the pool is full
+     *         or no tickets available to add.
+     */
 
     public synchronized boolean addTicket(Ticket ticket,String vendorName) {
         if (totalTickets == 0) {
@@ -75,7 +88,6 @@ public class TicketPool {
 
     public List<String> getLogs() {
         synchronized (logs) {
-            System.out.println("Retrieving logs: " + logs);
             return new ArrayList<>(logs); // Return a copy to avoid concurrent modifications.
         }
     }
@@ -84,7 +96,6 @@ public class TicketPool {
         synchronized (logs) {
             logs.add(message);
             System.out.println("Log added: " + message);
-            System.out.println("Current logs: " + logs);
         }
     }
 }

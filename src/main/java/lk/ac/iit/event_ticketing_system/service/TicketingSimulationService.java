@@ -15,14 +15,12 @@ import java.util.List;
 @Service
 public class TicketingSimulationService {
     private final TicketPool ticketPool;
-    // private final TicketingConfigRepository ticketingConfigRepository;
     private final List<Thread> vendorThreads = new ArrayList<>();
     private final List<Thread> customerThreads = new ArrayList<>();
 
     @Autowired
     public TicketingSimulationService(TicketPool ticketPool) {
         this.ticketPool = ticketPool;
-        //   this.ticketingConfigRepository = ticketingConfigRepository;
     }
 
     private boolean simulationRunning = false;
@@ -31,16 +29,11 @@ public class TicketingSimulationService {
         if (simulationRunning) {
             throw new RuntimeException("Simulation is already running.");
         }
-
         simulationRunning = true;
         System.out.println("Simulation starting...");
-        ticketPool.addSystemLog("Simulation started.");
+        ticketPool.addSystemLog("Simulation started...");
 
-
-        // Retrieve the TicketingConfig from the repository
-        //  TicketingConfig ticketingConfig = ticketingConfigRepository.findById(1L).orElseThrow(() -> new RuntimeException("Config not found"));
-
-        ticketPool.initialize(savedConfig);
+        ticketPool.initialize(savedConfig);  // savedConfig object has all the parameter details
 
         int ticketReleaseRate = savedConfig.getTicketReleaseRate();
         int ticketRetrievalRate = savedConfig.getTicketRetrievalRate();
@@ -49,7 +42,7 @@ public class TicketingSimulationService {
             String vendorName = "Vendor - " + i;
             Vendor vendor = new Vendor(vendorName);
 
-            VendorService vendorService = new VendorService(ticketPool, ticketReleaseRate, "Music Fest", 500, vendorName);
+            VendorService vendorService = new VendorService(ticketPool, ticketReleaseRate, "Music Fest", 500, vendor.getVendorName());
             Thread vendorThread = new Thread(vendorService, "Vendor-" + i);
             vendorThreads.add(vendorThread);
             System.out.println("Vendor thread starting");
@@ -61,7 +54,7 @@ public class TicketingSimulationService {
         for (int i = 1; i <= 4; i++) {
             String customerName = "Customer - " + i;
             Customer customer = new Customer(customerName);
-            CustomerService customerService = new CustomerService(ticketPool, ticketRetrievalRate, customerName);
+            CustomerService customerService = new CustomerService(ticketPool, ticketRetrievalRate, customer.getCustomerName());
             Thread customerThread = new Thread(customerService, "Customer-" + i);
             customerThreads.add(customerThread);
             System.out.println("Customer thread starting");

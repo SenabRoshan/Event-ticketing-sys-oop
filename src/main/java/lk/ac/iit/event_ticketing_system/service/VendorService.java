@@ -11,7 +11,6 @@ public class VendorService implements Runnable {
     private final double price;
     private String vendorName;
 
-
     public VendorService(TicketPool ticketPool, int releaseRate, String eventName, double price, String vendorName) {
         this.ticketPool = ticketPool;
         this.releaseRate = releaseRate;
@@ -20,18 +19,22 @@ public class VendorService implements Runnable {
         this.vendorName = vendorName;
     }
 
-
+    /**
+    Overrides the run method of runnable interface
+    Executes logic for vendor thread to release ticket to ticket pool at a specific rate
+     */
     @Override
     public void run() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
+                // Stop the vendor if adding tickets is no longer possible
                 if (!ticketPool.canVendorAdd()) {
-                    return; // Stop the vendor if adding tickets is no longer possible
+                    return;
                 }
 
                 Ticket ticket = new Ticket(eventName, price); // Create a new ticket
                 boolean added= ticketPool.addTicket(ticket, vendorName);
-//                System.out.println("Ticket added");
+
 
                 if (!added) {
                     break; // Stop the vendor if adding is no longer possible

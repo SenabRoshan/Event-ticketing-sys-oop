@@ -49,11 +49,11 @@ public class TicketingSystemCoreCLI {
 
         TicketPool ticketPool = new TicketPool(ticketingConfigure);
 
-        logger.log(Level.INFO, "1. 'START' to start simulation\n"
+        System.out.println("1. 'START' to start simulation\n"
                 + "2. 'PAUSE' to pause the simulation\n"
-                + "3. 'STOP' to quit the simulation\n");
+                + "3. 'STOP' to stop the simulation \n");
 
-        logger.log(Level.INFO, "Enter an action: ");
+        System.out.println("Enter an action:");
 
         while (true) {
 
@@ -82,7 +82,7 @@ public class TicketingSystemCoreCLI {
 
                         // Start customer threads
                         for (int i = 1; i <= 2; i++) {
-                            Customer customer = new Customer(ticketPool, ticketingConfigure.getCustomerRetrievalRate());
+                            Customer customer = new Customer(ticketPool, ticketingConfigure.getCustomerRetrievalRate(), "Customer-" + i);
                             Thread customerThread = new Thread(customer, "Customer-" + i);
                             customerThreads.add(customerThread);
                             customerThread.start();
@@ -92,7 +92,7 @@ public class TicketingSystemCoreCLI {
 
                 case "PAUSE":
                     if (!isSysRunning) {
-                        logger.log(Level.WARNING, "System is already stopped / paused!");
+                        logger.log(Level.WARNING, "System is not running! Cannot pause...");
                     } else {
                         logger.log(Level.INFO, "Pausing ticketing system...");
                         systemStop();
@@ -111,12 +111,18 @@ public class TicketingSystemCoreCLI {
                     return;
 
                 default:
-                    logger.log(Level.WARNING, "Invalid action. Use 'START', 'STOP', or 'EXIT'");
+                    logger.log(Level.WARNING, "Invalid action. Use 'START', 'PAUSE', or 'STOP'");
                     break;
             }
         }
     }
 
+    /**
+     * Configures ticketing system parameters using user input.
+     * Prompts the user for parameters and sets the ticketing configuration accordingly.
+     *
+     * @param scanner the scanner to read user input from the console.
+     */
     public static void configParameters(Scanner scanner) {
         ticketingConfigure.setTotalTickets(scanner);
         ticketingConfigure.setTicketReleaseRate(scanner);
@@ -124,9 +130,11 @@ public class TicketingSystemCoreCLI {
         ticketingConfigure.setMaxTicketCapacity(scanner);
     }
 
-
+    /**
+     * Waits for all vendor and customer threads to complete execution.
+     * Clears the thread lists after completion.
+     */
     public static void waitForThreadsToFinish() {
-        // Wait for vendor threads to finish
         for (Thread thread : vendorThreads) {
             try {
                 if (thread != null) {
@@ -138,7 +146,6 @@ public class TicketingSystemCoreCLI {
         }
         vendorThreads.clear();
 
-        // Wait for customer threads to finish
         for (Thread thread : customerThreads) {
             try {
                 if (thread != null) {
@@ -151,9 +158,11 @@ public class TicketingSystemCoreCLI {
         customerThreads.clear();
     }
 
+    /**
+     * Stops the system by interrupting all vendor and customer threads and waiting for them to finish.
+     */
     public static void systemStop() {
         isSysRunning = false;
-
         // Interrupt vendor threads
         for (Thread thread : vendorThreads) {
             if (thread != null) {
@@ -167,7 +176,6 @@ public class TicketingSystemCoreCLI {
                 thread.interrupt();
             }
         }
-
         // Wait for threads to finish
         waitForThreadsToFinish();
     }

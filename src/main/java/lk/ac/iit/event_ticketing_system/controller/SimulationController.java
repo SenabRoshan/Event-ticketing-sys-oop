@@ -39,7 +39,7 @@ public class SimulationController {
         // Step 2: Start the simulation using the saved configuration
         simulationService.startSimulation(savedConfig);
 
-        // Respond with a success message
+        // Responds with a success message
         return ResponseEntity.ok("Simulation started with saved configuration.");
     }
 

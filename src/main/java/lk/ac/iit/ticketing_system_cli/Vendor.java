@@ -14,6 +14,10 @@ public class Vendor implements Runnable {
         this.vendorID = vendorID;
     }
 
+    /**
+     Overrides the run method of runnable interface
+     Executes logic for vendor thread to release ticket to ticket pool at a specific rate
+     */
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {

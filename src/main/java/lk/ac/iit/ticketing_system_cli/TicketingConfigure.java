@@ -108,6 +108,10 @@ public class TicketingConfigure {
         }
     }
 
+    /**
+     * Saves the current configuration to "configuration.json" using Gson.
+     * Prints a success message if saved, or an error message if failed.
+     */
     public void saveConfiguration() {
         Gson gson = new Gson();
         try (FileWriter writer = new FileWriter("configuration.json")) {
@@ -118,6 +122,10 @@ public class TicketingConfigure {
         }
     }
 
+    /**
+     * Loads configuration from "configuration.json" and returns a TicketingConfigure object.
+     * Returns null if an error occurs during loading.
+     */
     public static TicketingConfigure loadConfiguration() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("configuration.json")) {
@@ -127,5 +135,4 @@ public class TicketingConfigure {
             return null;
         }
     }
-
 }
