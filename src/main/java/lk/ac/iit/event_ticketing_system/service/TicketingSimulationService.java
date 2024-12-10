@@ -79,6 +79,7 @@ public class TicketingSimulationService {
         // Clear thread lists
         vendorThreads.clear();
         customerThreads.clear();
+        ticketPool.addSystemLog("Total tickets Sold:" + ticketPool.getSoldTickets());
         ticketPool.addSystemLog("Simulation stopped.");
 
     }

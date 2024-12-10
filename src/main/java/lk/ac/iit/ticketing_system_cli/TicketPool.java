@@ -28,6 +28,8 @@ public class TicketPool {
         return shouldExit;
     }
 
+    private int soldTickets = 0;
+
     /**
      *  Adds a ticket to the pool if space is available and tickets remain in inventory.
      *  Synchronized for thread safety. Logs warnings if the pool is full or inventory is empty.
@@ -72,6 +74,7 @@ public class TicketPool {
         }
         if (!ticketsStorage.isEmpty()) {
             ticketsStorage.remove(0);  // removes the first ticket
+            soldTickets++;
             notifyAll();
             logger.log(Level.INFO, "{0} bought a ticket. Remaining tickets in Ticket pool: {1}",
                     new Object[]{customerID, ticketsStorage.size()});
@@ -96,6 +99,10 @@ public class TicketPool {
      */
     public boolean isFinalState() {
         return isFinalState;
+    }
+
+    public int getSoldTickets() {
+        return soldTickets;
     }
 
 }

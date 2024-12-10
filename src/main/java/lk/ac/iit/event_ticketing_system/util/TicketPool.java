@@ -17,6 +17,7 @@ public class TicketPool {
     private int totalTickets;
     private final List<String> logs = new ArrayList<>();
 
+    private int soldTickets = 0;
     /**
      * Initializes the ticket pool with configuration parameters.
      *
@@ -70,6 +71,7 @@ public class TicketPool {
         }
 
         Ticket ticket = tickets.remove(0);
+        soldTickets++;
         addSystemLog(customerName + " retrieved a ticket: Event Name - " + ticket.getEventName() + ", Ticket Price - " + ticket.getPrice());
         System.out.println(customerName+ " retrieved Ticket: 'Event Name'-" + ticket.getEventName()+ "' Ticket Price-'" + ticket.getPrice());
         return ticket;
@@ -99,5 +101,10 @@ public class TicketPool {
             System.out.println("Log added: " + message);
         }
     }
+
+    public int getSoldTickets() {
+        return soldTickets;
+    }
+
 }
 

@@ -56,7 +56,7 @@ const App = () => {
 
   return (
       <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
-        <h1>Event Ticketing System</h1>
+        <h1 style={{color: "#36454F"}}>Event Ticketing System</h1>
         <ConfigurationForm
             onStart={startSimulation}
             onStop={stopSimulation}

@@ -76,7 +76,7 @@ const ConfigurationForm = ({ onStart, onStop, simulationStatus}) => {
 
     return (
         <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-            <h2>Simulation Configuration</h2>
+            <h2 style={{color: "#36454F"}}>Configuration Form</h2>
             <div style={{ marginBottom: "10px" }}>
                 <label>Total Tickets:</label>
                 <input
@@ -129,6 +129,7 @@ const ConfigurationForm = ({ onStart, onStop, simulationStatus}) => {
                         padding: "10px 20px",
                         background: isSimulationRunning ? "gray" : "green",
                         color: "white",
+                        borderRadius: "10px",
                         border: "none",
                         cursor: isSimulationRunning ? "not-allowed" : "pointer",
                     }}
@@ -142,6 +143,7 @@ const ConfigurationForm = ({ onStart, onStop, simulationStatus}) => {
                         padding: "10px 20px",
                         background: "red",
                         color: "white",
+                        borderRadius: "10px",
                         border: "none",
                     }}
                 >

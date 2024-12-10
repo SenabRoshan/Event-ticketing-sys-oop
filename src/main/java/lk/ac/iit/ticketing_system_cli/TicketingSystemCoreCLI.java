@@ -103,6 +103,7 @@ public class TicketingSystemCoreCLI {
                 case "STOP":
                     if (!ticketPool.isShouldExit()) {
                         systemStop();
+                        System.out.println("Total tickets Sold:" + ticketPool.getSoldTickets());
                         logger.log(Level.INFO, "Stopping ticketing system...");
                     } else {
                         waitForThreadsToFinish();
