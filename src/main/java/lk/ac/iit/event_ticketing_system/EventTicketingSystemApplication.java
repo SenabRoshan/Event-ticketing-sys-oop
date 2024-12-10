@@ -9,5 +9,6 @@ public class EventTicketingSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(EventTicketingSystemApplication.class, args);
     }
+//    this is test
 
 }
