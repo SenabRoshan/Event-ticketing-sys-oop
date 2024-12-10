@@ -62,7 +62,7 @@ const App = () => {
             onStop={stopSimulation}
             simulationStatus={simulationStatus}
         />
-        <TicketStatus />
+        <TicketStatus simulationStatus={simulationStatus} />
         <LogDisplay logs={messages} />
       </div>
   );

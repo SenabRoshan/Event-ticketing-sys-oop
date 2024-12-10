@@ -1,10 +1,10 @@
 import React from "react";
 
-const TicketStatus = () => {
+const TicketStatus = ({ simulationStatus }) => {
     return (
         <div>
-            <h2>Ticket Status</h2>
-            <p>Additional ticket-related status or UI elements can go here.</p>
+            <h2 style={{color: "#36454F"}}>Simulation Status</h2>
+            <p>{simulationStatus}</p>
         </div>
     );
 };
