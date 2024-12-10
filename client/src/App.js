@@ -68,4 +68,5 @@ const App = () => {
   );
 };
 
+// main page
 export default App;

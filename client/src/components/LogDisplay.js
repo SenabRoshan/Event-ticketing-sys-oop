@@ -17,5 +17,7 @@ const LogDisplay = ({ logs }) => {
     );
 };
 
+// this is real time logging page
+
 export default LogDisplay;
 
