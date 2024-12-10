@@ -58,12 +58,13 @@ public class TicketPool {
 
     public synchronized Ticket retrieveTicket(String customerName) {
         if (totalTickets == 0 && tickets.isEmpty()) {
+            addSystemLog("All the tickets successfully sold. No more tickets available for retrieval.");
             System.out.println("No more tickets available for retrieval. All tickets sold.");
             return null;
         }
 
         if (tickets.isEmpty() && totalTickets > 0) {
-            addSystemLog("No more tickets available for retrieval.");
+            addSystemLog("No more tickets available for retrieval. Ticket pool is empty.");
             System.out.println("No tickets available in the pool. Ticket pool is empty.");
             return null;
         }

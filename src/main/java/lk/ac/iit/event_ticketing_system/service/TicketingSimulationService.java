@@ -38,7 +38,7 @@ public class TicketingSimulationService {
         int ticketReleaseRate = savedConfig.getTicketReleaseRate();
         int ticketRetrievalRate = savedConfig.getTicketRetrievalRate();
 
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 5; i++) {
             String vendorName = "Vendor - " + i;
             Vendor vendor = new Vendor(vendorName);
 
@@ -51,7 +51,7 @@ public class TicketingSimulationService {
         }
 
 
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= 10; i++) {
             String customerName = "Customer - " + i;
             Customer customer = new Customer(customerName);
             CustomerService customerService = new CustomerService(ticketPool, ticketRetrievalRate, customer.getCustomerName());

@@ -73,7 +73,7 @@ public class TicketingSystemCoreCLI {
 
 
                         // Start vendor threads
-                        for (int i = 1; i <= 3; i++) {
+                        for (int i = 1; i <= 5; i++) {
                             Vendor vendor = new Vendor(ticketPool, ticketingConfigure.getTicketReleaseRate(), "Vendor-" + i);
                             Thread vendorThread = new Thread(vendor, "Vendor-" + i);
                             vendorThreads.add(vendorThread);
@@ -81,7 +81,7 @@ public class TicketingSystemCoreCLI {
                         }
 
                         // Start customer threads
-                        for (int i = 1; i <= 2; i++) {
+                        for (int i = 1; i <= 10; i++) {
                             Customer customer = new Customer(ticketPool, ticketingConfigure.getCustomerRetrievalRate(), "Customer-" + i);
                             Thread customerThread = new Thread(customer, "Customer-" + i);
                             customerThreads.add(customerThread);
