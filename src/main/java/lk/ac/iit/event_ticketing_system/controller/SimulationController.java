@@ -40,7 +40,7 @@ public class SimulationController {
         simulationService.startSimulation(savedConfig);
 
         // Responds with a success message
-        return ResponseEntity.ok("Simulation started with saved configuration.");
+        return ResponseEntity.ok("Simulation started successfully with saved configuration !!!");
     }
 
     @PostMapping("/stop")
@@ -49,7 +49,7 @@ public class SimulationController {
             // Stop the simulation
             simulationService.stopSimulation();
             System.out.println("Simulation stopped.");
-            return ResponseEntity.ok("Simulation stopped successfully.");
+            return ResponseEntity.ok("Simulation stopped successfully !!!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error stopping the simulation: " + e.getMessage());
