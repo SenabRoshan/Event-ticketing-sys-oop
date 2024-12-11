@@ -23,13 +23,12 @@ public class CustomerService implements Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 // Stop the customer if tickets are unavailable
-                if (!ticketPool.canCustomerRetrieve()) {
-                    synchronized (ticketPool) {
-                        ticketPool.wait(); // Wait until tickets are available
-                    }
-                }
+//                if (!ticketPool.canCustomerRetrieve()) {
+//                    synchronized (ticketPool) {
+//                        ticketPool.wait(); // Wait until tickets are available
+//                    }
+//                }
                 Ticket ticket = ticketPool.retrieveTicket(customerName);
-
                 if (ticket == null) {
                     return;
                 }

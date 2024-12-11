@@ -35,7 +35,6 @@ public class VendorService implements Runnable {
                 Ticket ticket = new Ticket(eventName, price); // Create a new ticket
                 boolean added= ticketPool.addTicket(ticket, vendorName);
 
-
                 if (!added) {
                     return; // Stop the vendor if adding is no longer possible
                 }

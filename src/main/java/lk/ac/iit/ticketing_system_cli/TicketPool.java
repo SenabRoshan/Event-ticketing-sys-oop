@@ -40,13 +40,10 @@ public class TicketPool {
         int maxPoolCapacity = ticketingConfigure.getMaxTicketCapacity();
         int totalTickets = ticketingConfigure.getTotalTickets();
 
-//        if (totalTickets == 0)
-//            return;
         if (totalTickets == 0) {
             // Check if no tickets are available and flag the system as in the final state.
             if (ticketsStorage.isEmpty()) {
-                isFinalState = true;
-//                notifyAll(); // Notify all waiting threads (both customers and vendors)
+                shouldExit = true;
                 return; // No tickets to release
             }
         }
@@ -61,6 +58,11 @@ public class TicketPool {
         } else {
             if (ticketsStorage.size() >= maxPoolCapacity) {
                 logger.log(Level.WARNING, "Ticket Pool reached its maximum capacity of {0} tickets.", maxPoolCapacity);
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
             if (totalTickets == 0) {
                 logger.log(Level.SEVERE, "No more tickets available in inventory to add to the pool.");
@@ -69,7 +71,7 @@ public class TicketPool {
     }
 
     /**
-     * Retrieves a ticket from the pool if ticket available.
+     * Retrieves a ticket from the pool if ticket available. If not customer will wait
      * Synchronized for thread safety. Logs actions or errors when the pool is empty.
      *
      * @param customerID  customer buys the ticket
@@ -93,12 +95,10 @@ public class TicketPool {
         }
         if (!ticketsStorage.isEmpty()) {
             ticketsStorage.remove(0);  // removes the first ticket
-            soldTickets++;
             notifyAll();
+            soldTickets++;
             logger.log(Level.INFO, "{0} bought a ticket. Tickets in pool now: {1}",
                     new Object[]{customerID, ticketsStorage.size()});
-        }else {
-            logger.log(Level.SEVERE, "Ticket Pool is empty. No tickets available.");
         }
     }
 
