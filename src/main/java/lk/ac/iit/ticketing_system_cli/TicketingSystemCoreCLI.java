@@ -59,7 +59,7 @@ public class TicketingSystemCoreCLI {
 
             String action = scanner.nextLine().toUpperCase().trim();
             if (ticketPool.isFinalState() && !action.equals("STOP")) {
-                logger.log(Level.WARNING, "All the threads are completed. You can only enter 'EXIT' to terminate the system.");
+                logger.log(Level.WARNING, "All the threads are completed. You can only enter 'STOP' to terminate the system.");
                 continue;
             }
 

@@ -72,7 +72,7 @@ public class TicketPool {
 
         Ticket ticket = tickets.remove(0);
         soldTickets++;
-        addSystemLog(customerName + " retrieved a ticket: Event Name - " + ticket.getEventName() + ", Ticket Price - " + ticket.getPrice());
+        addSystemLog(customerName + " retrieved a ticket: Event Name - " + ticket.getEventName() + ", Ticket Price - " + ticket.getPrice() + ", Tickets in pool now: " + tickets.size());
         System.out.println(customerName+ " retrieved Ticket: 'Event Name'-" + ticket.getEventName()+ "' Ticket Price-'" + ticket.getPrice());
         return ticket;
     }

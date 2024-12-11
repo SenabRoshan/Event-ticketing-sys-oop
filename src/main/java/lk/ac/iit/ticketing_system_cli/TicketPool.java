@@ -40,7 +40,7 @@ public class TicketPool {
         int maxPoolCapacity = ticketingConfigure.getMaxTicketCapacity();
         int totalTickets = ticketingConfigure.getTotalTickets();
 
-      if (totalTickets == 0)
+        if (totalTickets == 0)
             return;
 
         if (ticketsStorage.size() < maxPoolCapacity) {
@@ -49,8 +49,8 @@ public class TicketPool {
                 ticketsStorage.add(newTicket);
                 ticketingConfigure.decreaseTotalTickets(); // reduce total tickets after releasing it to the pool
                 notifyAll();
-                logger.log(Level.INFO, "{0} released ticket {1}. Remaining Total Tickets: {2}",
-                        new Object[]{vendorID, newTicket, ticketingConfigure.getTotalTickets()});
+                logger.log(Level.INFO, "{0} released ticket to the pool {1}. Tickets in pool now: {2} Remaining Total Tickets: {3}",
+                        new Object[]{vendorID, newTicket,ticketsStorage.size(), ticketingConfigure.getTotalTickets()});
             }else {
                 logger.log(Level.SEVERE, "No more tickets available in inventory to add to the pool.");
             }
@@ -76,7 +76,7 @@ public class TicketPool {
             ticketsStorage.remove(0);  // removes the first ticket
             soldTickets++;
             notifyAll();
-            logger.log(Level.INFO, "{0} bought a ticket. Remaining tickets in Ticket pool: {1}",
+            logger.log(Level.INFO, "{0} bought a ticket. Tickets in pool now: {1}",
                     new Object[]{customerID, ticketsStorage.size()});
         }else {
             logger.log(Level.SEVERE, "Ticket Pool is empty. No tickets available.");
