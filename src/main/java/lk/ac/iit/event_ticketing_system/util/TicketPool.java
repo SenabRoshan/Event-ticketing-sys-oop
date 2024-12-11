@@ -38,42 +38,54 @@ public class TicketPool {
      *         or no tickets available to add.
      */
 
-    public synchronized boolean addTicket(Ticket ticket,String vendorName) {
+    public synchronized boolean addTicket(Ticket ticket,String vendorName) throws InterruptedException {
         if (totalTickets == 0) {
             System.out.println("No more tickets available to add.");
             return false;
         }
-        if (tickets.size() >= maxCapacity) {
-            addSystemLog("Pool is full. Cannot add more tickets.");
-            System.out.println("Pool is full. Cannot add ticket.");
-            return false;
+//        if (tickets.size() >= maxCapacity) {
+//            addSystemLog("Pool is full. Cannot add more tickets.");
+//            System.out.println("Pool is full. Cannot add ticket.");
+//            return false;
+//        }
+        while (tickets.size() >= maxCapacity) {
+            wait(); // Wait until space is available
         }
 
         tickets.add(ticket);
         totalTickets--; // Reduce total tickets available
         addSystemLog(vendorName + " added a ticket. Remaining Total Tickets: " + totalTickets);
         System.out.println(vendorName + " added Ticket. Remaining Total Tickets: " + totalTickets );
-
+        notifyAll();
         return true;
     }
 
-    public synchronized Ticket retrieveTicket(String customerName) {
-        if (totalTickets == 0 && tickets.isEmpty()) {
-            addSystemLog("All the tickets successfully sold. No more tickets available for retrieval.");
-            System.out.println("No more tickets available for retrieval. All tickets sold.");
-            return null;
-        }
-
-        if (tickets.isEmpty() && totalTickets > 0) {
-            addSystemLog("No more tickets available for retrieval. Ticket pool is empty.");
-            System.out.println("No tickets available in the pool. Ticket pool is empty.");
-            return null;
+    public synchronized Ticket retrieveTicket(String customerName) throws InterruptedException {
+//        if (totalTickets == 0 && tickets.isEmpty()) {
+//            addSystemLog("All the tickets successfully sold. No more tickets available for retrieval.");
+//            System.out.println("No more tickets available for retrieval. All tickets sold.");
+//            return null;
+//        }
+//
+//        if (tickets.isEmpty() && totalTickets > 0) {
+//            addSystemLog("No more tickets available for retrieval. Ticket pool is empty.");
+//            System.out.println("No tickets available in the pool. Ticket pool is empty.");
+//            return null;
+//        }
+        while (tickets.isEmpty()) {
+            if (totalTickets == 0) {
+             //   addSystemLog("All tickets successfully sold. No more tickets available for retrieval.");
+                return null;
+            }
+            addSystemLog(customerName + " waiting to buy a ticket");
+            wait(); // Wait until tickets are available
         }
 
         Ticket ticket = tickets.remove(0);
         soldTickets++;
         addSystemLog(customerName + " retrieved a ticket: Event Name - " + ticket.getEventName() + ", Ticket Price - " + ticket.getPrice() + ", Tickets in pool now: " + tickets.size());
         System.out.println(customerName+ " retrieved Ticket: 'Event Name'-" + ticket.getEventName()+ "' Ticket Price-'" + ticket.getPrice());
+//        notifyAll();
         return ticket;
     }
 
@@ -86,7 +98,7 @@ public class TicketPool {
     }
 
     public boolean canCustomerRetrieve() {
-        return tickets.size() > 0;
+        return !tickets.isEmpty() || totalTickets > 0;
     }
 
     public List<String> getLogs() {

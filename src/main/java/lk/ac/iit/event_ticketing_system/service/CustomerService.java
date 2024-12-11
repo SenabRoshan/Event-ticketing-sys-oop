@@ -24,12 +24,14 @@ public class CustomerService implements Runnable {
             while (!Thread.currentThread().isInterrupted()) {
                 // Stop the customer if tickets are unavailable
                 if (!ticketPool.canCustomerRetrieve()) {
-                    return;
+                    synchronized (ticketPool) {
+                        ticketPool.wait(); // Wait until tickets are available
+                    }
                 }
                 Ticket ticket = ticketPool.retrieveTicket(customerName);
 
                 if (ticket == null) {
-                    break;
+                    return;
                 }
                 Thread.sleep(retrievalRate * 1000L);
             }

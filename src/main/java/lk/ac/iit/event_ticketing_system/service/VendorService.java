@@ -37,7 +37,7 @@ public class VendorService implements Runnable {
 
 
                 if (!added) {
-                    break; // Stop the vendor if adding is no longer possible
+                    return; // Stop the vendor if adding is no longer possible
                 }
 
                 Thread.sleep(releaseRate * 1000L);

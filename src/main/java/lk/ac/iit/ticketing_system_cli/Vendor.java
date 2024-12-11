@@ -23,7 +23,7 @@ public class Vendor implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             if (ticketPool.isShouldExit()) {
                 // Exit the loop if all tickets are sold
-                break;
+                return;
             }
             ticketPool.addTicket(vendorID);
             try {

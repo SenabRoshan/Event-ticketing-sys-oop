@@ -40,22 +40,31 @@ public class TicketPool {
         int maxPoolCapacity = ticketingConfigure.getMaxTicketCapacity();
         int totalTickets = ticketingConfigure.getTotalTickets();
 
-        if (totalTickets == 0)
-            return;
+//        if (totalTickets == 0)
+//            return;
+        if (totalTickets == 0) {
+            // Check if no tickets are available and flag the system as in the final state.
+            if (ticketsStorage.isEmpty()) {
+                isFinalState = true;
+//                notifyAll(); // Notify all waiting threads (both customers and vendors)
+                return; // No tickets to release
+            }
+        }
 
-        if (ticketsStorage.size() < maxPoolCapacity) {
-            if (totalTickets > 0){
-                int newTicket = ticketsStorage.size() + 1;
-                ticketsStorage.add(newTicket);
-                ticketingConfigure.decreaseTotalTickets(); // reduce total tickets after releasing it to the pool
-                notifyAll();
-                logger.log(Level.INFO, "{0} released ticket to the pool {1}. Tickets in pool now: {2} Remaining Total Tickets: {3}",
-                        new Object[]{vendorID, newTicket,ticketsStorage.size(), ticketingConfigure.getTotalTickets()});
-            }else {
+        if (ticketsStorage.size() < maxPoolCapacity && totalTickets > 0) {
+            int newTicket = ticketsStorage.size() + 1;
+            ticketsStorage.add(newTicket);
+            ticketingConfigure.decreaseTotalTickets(); // Decrease total ticket count after releasing it to the pool
+            notifyAll(); // Notify customers that a ticket is available
+            logger.log(Level.INFO, "{0} released ticket to the pool {1}. Tickets in pool now: {2} Remaining Total Tickets: {3}",
+                    new Object[]{vendorID, newTicket, ticketsStorage.size(), ticketingConfigure.getTotalTickets()});
+        } else {
+            if (ticketsStorage.size() >= maxPoolCapacity) {
+                logger.log(Level.WARNING, "Ticket Pool reached its maximum capacity of {0} tickets.", maxPoolCapacity);
+            }
+            if (totalTickets == 0) {
                 logger.log(Level.SEVERE, "No more tickets available in inventory to add to the pool.");
             }
-        }else {
-            logger.log(Level.WARNING, "Ticket Pool reached its maximum capacity of {0} tickets.", maxPoolCapacity);
         }
     }
 
@@ -71,6 +80,16 @@ public class TicketPool {
             isFinalState = true;
             System.out.println("All tickets sold.. Enter 'STOP' to terminate the system.");
             return;
+        }
+        while (ticketsStorage.isEmpty() && ticketingConfigure.getTotalTickets() > 0) {
+            try {
+                // Wait for a ticket to be added
+                logger.log(Level.INFO, "{0} is waiting for a ticket.", customerID);
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
         }
         if (!ticketsStorage.isEmpty()) {
             ticketsStorage.remove(0);  // removes the first ticket

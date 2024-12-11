@@ -20,7 +20,7 @@ public class Customer implements Runnable{
         while (!Thread.currentThread().isInterrupted()) {
             if (ticketPool.isShouldExit()) {
                 // Exit the loop if all tickets are sold
-                break;
+                return;
             }
             ticketPool.retrieveTicket(customerID);
             try {
