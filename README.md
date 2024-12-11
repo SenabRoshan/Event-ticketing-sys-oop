@@ -19,7 +19,7 @@ Prerequisites
 
 6.React Dependencies: Managed using npm.
 
-1.Run the Core Java CLI Application
+(1)Run the Core Java CLI Application
 
 The Core Java CLI part is a console-based application that demonstrates how the ticketing system works. To run it:
 
@@ -36,7 +36,7 @@ cd src/main/java/lk.ac.iit.ticketing_system_cli
 5.The ticketing system simulation will run in the console.
 
 
-2.Setup the Backend (Spring Boot)
+(2)Setup the Backend (Spring Boot)
 
 1.Navigate to the backend directory:
 
@@ -65,7 +65,7 @@ mvn spring-boot:run
 The backend should be accessible at http://localhost:8080.
 
 
-3.Setup the Frontend (React)
+(3)Setup the Frontend (React)
 
 1.Navigate to the frontend directory:
 
@@ -86,7 +86,7 @@ npm start
 The application should open automatically in your default browser at http://localhost:3000.
 
 
-4.Testing the Project
+(4)Testing the Project
 
 After adding the configuration parameters Start and stop the simulation using the provided UI on the frontend.
 
@@ -95,7 +95,7 @@ Logs and ticket status will be displayed in the frontend.
 If any issues arise, check the backend console logs or React development tools.
 
 
-Troubleshooting
+(5)Troubleshooting
 
 Dependencies not resolving:
 
