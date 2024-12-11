@@ -107,6 +107,7 @@ public class TicketingSystemCoreCLI {
                         logger.log(Level.INFO, "Stopping ticketing system...");
                     } else {
                         waitForThreadsToFinish();
+                        System.out.println("Total tickets Sold:" + ticketPool.getSoldTickets());
                         logger.log(Level.INFO, "Stopping ticketing system...");
                     }
                     return;
