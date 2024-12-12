@@ -25,6 +25,13 @@ public class TicketingSimulationService {
 
     private boolean simulationRunning = false;
 
+    /**
+     * Starts the simulation process.
+     *
+     * @param savedConfig The configuration object containing all necessary parameters for the simulation.
+     *
+     * @throws RuntimeException If the simulation is already running.
+     */
     public void startSimulation(TicketingConfig savedConfig) {
         if (simulationRunning) {
             throw new RuntimeException("Simulation is already running.");
@@ -61,10 +68,12 @@ public class TicketingSimulationService {
             customerThread.start();
             System.out.println("Customer thread started");
         }
-
-
     }
 
+    /**
+     * Stops the ongoing simulation.
+     * Interrupts all vendor and customer threads and clears the thread lists.
+     */
     public void stopSimulation() {
         // Interrupt all vendor threads
         for (Thread vendorThread : vendorThreads) {
@@ -84,10 +93,18 @@ public class TicketingSimulationService {
 
     }
 
+//      Checks if the simulation is currently running.
+//      @return `true` if the simulation is running, `false` otherwise.
+
     public boolean isSimulationRunning() {
         return simulationRunning;
     }
 
+    /**
+     * Retrieves the list of logs generated during the simulation.
+     *
+     * @return A list of strings representing the simulation logs.
+     */
     public List<String> getLogs() {
         return ticketPool.getLogs();
     }

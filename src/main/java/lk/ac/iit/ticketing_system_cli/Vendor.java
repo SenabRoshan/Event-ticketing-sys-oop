@@ -1,8 +1,6 @@
 package lk.ac.iit.ticketing_system_cli;
 
 
-import static lk.ac.iit.ticketing_system_cli.TicketingSystemCoreCLI.systemStop;
-
 public class Vendor implements Runnable {
     private final TicketPool ticketPool;
     private final int ticketReleaseRate;

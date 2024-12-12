@@ -86,7 +86,7 @@ public class TicketPool {
         while (ticketsStorage.isEmpty() && ticketingConfigure.getTotalTickets() > 0) {
             try {
                 // Wait for a ticket to be added
-                logger.log(Level.INFO, "{0} is waiting for a ticket.", customerID);
+                logger.log(Level.INFO, "{0} is waiting to buy a ticket.", customerID);
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -119,6 +119,10 @@ public class TicketPool {
     public boolean isFinalState() {
         return isFinalState;
     }
+
+
+//    Returns current number of sold tickets.
+//    @return the number of sold tickets.
 
     public int getSoldTickets() {
         return soldTickets;

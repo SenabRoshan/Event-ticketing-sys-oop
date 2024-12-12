@@ -30,12 +30,14 @@ public class TicketPool {
 
     /**
      * Adds a ticket to the ticket pool if space available and tickets remain.
-     * synchronized to ensure thread safety in a multi-threaded environment.
+     * synchronized to ensure thread safety in a multithreaded environment.
      *
      * @param ticket the ticket to be added to the pool.
      * @param vendorName the name of the vendor
      * @return true if the ticket was successfully added,  false if the pool is full
      *         or no tickets available to add.
+     * @throws InterruptedException If the thread is interrupted while waiting for a ticket.
+     *
      */
 
     public synchronized boolean addTicket(Ticket ticket,String vendorName) throws InterruptedException {
@@ -43,11 +45,7 @@ public class TicketPool {
             System.out.println("No more tickets available to add.");
             return false;
         }
-//        if (tickets.size() >= maxCapacity) {
-//            addSystemLog("Pool is full. Cannot add more tickets.");
-//            System.out.println("Pool is full. Cannot add ticket.");
-//            return false;
-//        }
+
         while (tickets.size() >= maxCapacity) {
             wait(); // Wait until space is available
         }
@@ -60,7 +58,15 @@ public class TicketPool {
         return true;
     }
 
-
+    /**
+     * Retrieves a ticket from the pool for the specified customer.
+     *
+     * @param customerName The name of the customer requesting a ticket.
+     *
+     * @return The retrieved ticket, or `null` if no tickets are available.
+     *
+     * @throws InterruptedException If the thread is interrupted while waiting for a ticket.
+     */
     public synchronized Ticket retrieveTicket(String customerName) throws InterruptedException {
 
         while (tickets.isEmpty()) {
@@ -79,30 +85,50 @@ public class TicketPool {
         return ticket;
     }
 
+    /**
+     * Gets the current number of tickets available in the pool.
+     *
+     * @return The number of tickets in the pool.
+     */
     public int getTicketCount() {
         return tickets.size();
     }
 
+    /**
+     * Checks if a vendor can add more tickets to the pool.
+     *
+     * @return `true` if the pool is not full and there are total tickets remaining, `false` otherwise.
+     */
     public boolean canVendorAdd() {
         return tickets.size() < maxCapacity && totalTickets > 0;
     }
 
-//    public boolean canCustomerRetrieve() {
-//        return !tickets.isEmpty() && totalTickets > 0;
-//    }
-
+    /**
+     * Retrieves a copy of the simulation logs.
+     *
+     * @return A list of strings representing the simulation logs.
+     */
     public List<String> getLogs() {
         synchronized (logs) {
             return new ArrayList<>(logs); // Return a copy to avoid concurrent modifications.
         }
     }
 
+    /**
+     * Adds a new log message to the simulation log.
+     *
+     * @param message The log message to be added.
+     */
     public void addSystemLog(String message) {
         synchronized (logs) {
             logs.add(message);
             System.out.println("Log added: " + message);
         }
     }
+
+
+//     Gets the total number of tickets sold.
+//     @return The number of tickets sold.
 
     public int getSoldTickets() {
         return soldTickets;
